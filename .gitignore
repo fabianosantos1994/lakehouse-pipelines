@@ -1,21 +1,26 @@
-# Python
+# =========================
+# PYTHON
+# =========================
 __pycache__/
 *.pyc
 
-# Environment
-.env
-.venv/
-venv/
+# =========================
+# DATASETS (decidir)
+# =========================
+datasets/raw/*.csv
 
-# IDE
-.vscode/
-.idea/
+# OU, se quiser manter:
+# !datasets/raw/municipios.csv
 
-# OS
+# =========================
+# TEMP
+# =========================
+*.log
+*.tmp
 .DS_Store
 
-# Logs
-*.log
-
-# Temporary data
-tmp/
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
