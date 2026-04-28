@@ -1,35 +1,16 @@
-from pyspark.sql import SparkSession
+import sys
+from pathlib import Path
+
 from pyspark.sql.functions import current_date, col, trim
 from pyspark.sql.types import StructType, StructField, StringType
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-def build_spark_session() -> SparkSession:
-    return (
-        SparkSession.builder
-        .appName("bronze_ingest_municipios")
-
-        # Iceberg
-        .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions")
-        .config("spark.sql.defaultCatalog", "lakehouse")
-
-        .config("spark.sql.catalog.lakehouse", "org.apache.iceberg.spark.SparkCatalog")
-        .config("spark.sql.catalog.lakehouse.type", "hive")
-        .config("spark.sql.catalog.lakehouse.uri", "thrift://hive-metastore:9083")
-        .config("spark.sql.catalog.lakehouse.warehouse", "s3a://lakehouse/warehouse")
-
-        # S3 / MinIO
-        .config("spark.hadoop.fs.s3a.endpoint", "http://minio:9000")
-        .config("spark.hadoop.fs.s3a.access.key", "minio")
-        .config("spark.hadoop.fs.s3a.secret.key", "minio123")
-        .config("spark.hadoop.fs.s3a.path.style.access", "true")
-        .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
-
-        .getOrCreate()
-    )
+from common.spark import build_spark_session
 
 
 def main() -> None:
-    spark = build_spark_session()
+    spark = build_spark_session("bronze_ingest_municipios")
 
     schema = StructType([
         StructField("municipio_id", StringType(), True),
