@@ -109,3 +109,8 @@ src/
 * Schema evolution automation
 * Data quality checks
 * Multiple datasets
+
+
+Known limitation:
+The current dataset ingestion may contain schema/header inconsistencies.
+Data correctness will be addressed in V3 (Data Quality & Governance).

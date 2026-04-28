@@ -1,17 +1,16 @@
 import sys
 from pathlib import Path
 
+from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, trim, upper, when
 from pyspark.sql.types import IntegerType
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from common.spark import build_spark_session
+from common.job import run_job
 
 
-def main() -> None:
-    spark = build_spark_session("silver_municipios")
-
+def run_pipeline(spark: SparkSession) -> None:
     source_table = "lakehouse.bronze.municipios"
     target_table = "lakehouse.silver.municipios"
 
@@ -46,8 +45,6 @@ def main() -> None:
     print(f"Successfully wrote data to {target_table}")
     print(f"Row count: {df_clean.count()}")
 
-    spark.stop()
-
 
 if __name__ == "__main__":
-    main()
+    run_job("silver_municipios", run_pipeline)

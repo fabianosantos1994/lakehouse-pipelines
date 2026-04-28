@@ -1,16 +1,15 @@
 import sys
 from pathlib import Path
 
+from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count, max as spark_max
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from common.spark import build_spark_session
+from common.job import run_job
 
 
-def main() -> None:
-    spark = build_spark_session("gold_build_municipios_by_state")
-
+def run_pipeline(spark: SparkSession) -> None:
     source_table = "lakehouse.silver.municipios"
     target_table = "lakehouse.gold.municipios_by_state"
 
@@ -38,8 +37,6 @@ def main() -> None:
     print(f"Successfully wrote data to {target_table}")
     print(f"Row count: {df_gold.count()}")
 
-    spark.stop()
-
 
 if __name__ == "__main__":
-    main()
+    run_job("gold_build_municipios_by_state", run_pipeline)
