@@ -8,11 +8,15 @@ from pyspark.sql.types import IntegerType
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from common.job import run_job
+from common.logger import get_logger
+from config.municipios import BRONZE_TABLE, SILVER_TABLE
+
+logger = get_logger(__name__)
 
 
 def run_pipeline(spark: SparkSession) -> None:
-    source_table = "lakehouse.bronze.municipios"
-    target_table = "lakehouse.silver.municipios"
+    source_table = BRONZE_TABLE
+    target_table = SILVER_TABLE
 
     df = spark.table(source_table)
 
@@ -42,8 +46,8 @@ def run_pipeline(spark: SparkSession) -> None:
         .createOrReplace()
     )
 
-    print(f"Successfully wrote data to {target_table}")
-    print(f"Row count: {df_clean.count()}")
+    logger.info("Successfully wrote data to %s", target_table)
+    logger.info("Row count: %s", df_clean.count())
 
 
 if __name__ == "__main__":

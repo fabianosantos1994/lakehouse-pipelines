@@ -8,6 +8,10 @@ from pyspark.sql.types import StructType, StructField, StringType
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from common.job import run_job
+from common.logger import get_logger
+from config.municipios import INPUT_PATH, BRONZE_TABLE
+
+logger = get_logger(__name__)
 
 
 def run_pipeline(spark: SparkSession) -> None:
@@ -17,8 +21,8 @@ def run_pipeline(spark: SparkSession) -> None:
         StructField("state", StringType(), True),
     ])
 
-    input_path = "/opt/project/datasets/raw/municipios.csv"
-    target_table = "lakehouse.bronze.municipios"
+    input_path = INPUT_PATH
+    target_table = BRONZE_TABLE
 
     df = (
         spark.read
@@ -43,8 +47,8 @@ def run_pipeline(spark: SparkSession) -> None:
         .createOrReplace()
     )
 
-    print(f"Successfully wrote data to {target_table}")
-    print(f"Row count: {df.count()}")
+    logger.info("Successfully wrote data to %s", target_table)
+    logger.info("Row count: %s", df.count())
 
 
 if __name__ == "__main__":
