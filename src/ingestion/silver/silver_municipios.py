@@ -5,11 +5,11 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, trim, upper, when
 from pyspark.sql.types import IntegerType
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from common.job import run_job
 from common.logger import get_logger
-from config.municipios import BRONZE_TABLE, SILVER_TABLE
+from configs.municipios import BRONZE_TABLE, SILVER_TABLE
 
 logger = get_logger(__name__)
 

@@ -4,11 +4,11 @@ from pathlib import Path
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count, max as spark_max
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from common.job import run_job
 from common.logger import get_logger
-from config.municipios import SILVER_TABLE, GOLD_TABLE
+from configs.municipios import SILVER_TABLE, GOLD_TABLE
 
 logger = get_logger(__name__)
 
