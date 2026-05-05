@@ -24,6 +24,9 @@ def run_pipeline(spark: SparkSession) -> None:
     input_path = INPUT_PATH
     target_table = BRONZE_TABLE
 
+    logger.info("Source path: %s", input_path)
+    logger.info("Target table: %s", target_table)
+
     df = (
         spark.read
         .option("header", "false")
@@ -47,8 +50,8 @@ def run_pipeline(spark: SparkSession) -> None:
         .createOrReplace()
     )
 
-    logger.info("Successfully wrote data to %s", target_table)
-    logger.info("Row count: %s", df.count())
+    rows_written = df.count()
+    logger.info("Rows written: %s", rows_written)
 
 
 if __name__ == "__main__":

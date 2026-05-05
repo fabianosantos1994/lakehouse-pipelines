@@ -17,6 +17,9 @@ def run_pipeline(spark: SparkSession) -> None:
     source_table = SILVER_TABLE
     target_table = GOLD_TABLE
 
+    logger.info("Source table: %s", source_table)
+    logger.info("Target table: %s", target_table)
+
     df_silver = spark.table(source_table)
 
     df_gold = (
@@ -38,8 +41,8 @@ def run_pipeline(spark: SparkSession) -> None:
         .createOrReplace()
     )
 
-    logger.info("Successfully wrote data to %s", target_table)
-    logger.info("Row count: %s", df_gold.count())
+    rows_written = df_gold.count()
+    logger.info("Rows written: %s", rows_written)
 
 
 if __name__ == "__main__":
