@@ -27,6 +27,7 @@ def run_pipeline(spark: SparkSession) -> None:
     logger.info("Source path: %s", input_path)
     logger.info("Target table: %s", target_table)
 
+    logger.info("Reading source data")
     df = (
         spark.read
         .option("header", "false")
@@ -43,6 +44,7 @@ def run_pipeline(spark: SparkSession) -> None:
 
     spark.sql("CREATE NAMESPACE IF NOT EXISTS lakehouse.bronze")
 
+    logger.info("Writing target data")
     (
         df.writeTo(target_table)
         .using("iceberg")
