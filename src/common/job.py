@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from time import perf_counter
 
 from pyspark.sql import SparkSession
 
@@ -9,6 +10,7 @@ from common.spark import build_spark_session
 def run_job(app_name: str, job_fn: Callable[[SparkSession], None]) -> None:
     spark = None
     logger = get_logger(app_name)
+    started_at = perf_counter()
 
     logger.info("Job started")
 
@@ -21,6 +23,9 @@ def run_job(app_name: str, job_fn: Callable[[SparkSession], None]) -> None:
     else:
         logger.info("Job succeeded")
     finally:
+        duration_seconds = perf_counter() - started_at
+        logger.info("Job duration: %.2f seconds", duration_seconds)
+
         if spark is not None:
             logger.info("Stopping Spark session")
             spark.stop()
